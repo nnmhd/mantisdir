@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- @Vue -->
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js
+      "
+    ></script>
+    <!-- @FontAwesome -->
+    <script
+      src="https://kit.fontawesome.com/5ea80a4b63.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- @CSS -->
+    <link rel="stylesheet" href="./css/main.css" />
+    <!-- @JS -->
+    <script defer src="./js/main.js"></script>
+    <title>Mantisdir</title>
+  </head>
+  <body>
+    <div id="app" class="container">
+      <section id="test">
+        <div v-if="isLoading" class="loading"></div>
+        <div
+          id="continent-species"
+          v-for="(mantis, index) in mantis"
+          :key="mantis.common_name"
+          class="mantis-card"
+        >
+          <h3 @click="getMantis(mantis.continental_id)">
+            {{ mantis.common_name}}
+          </h3>
+          <p>{{ mantis.species_name }}</p>
+          <p>{{ mantis.continent }}</p>
+        </div>
+        <div v-if="error">{{error}}</div>
+
+        <div id="sub-species" v-if="continent">
+          <div v-if="isLoading" class="loading"></div>
+          <div
+            v-for="(localMantis, index) in mantis[0].subspecies"
+            :key="localMantis.subspecies_id"
+          >
+            <p>{{ localMantis.subspecies_name }}</p>
+          </div>
+          <div v-if="error">{{error}}</div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
