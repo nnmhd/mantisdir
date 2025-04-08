@@ -1,3 +1,6 @@
+import { GreenSock } from "./gsap.js";
+GreenSock();
+
 const app = Vue.createApp({
   data() {
     return {
