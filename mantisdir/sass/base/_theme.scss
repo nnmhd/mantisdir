@@ -10,15 +10,41 @@ body {
   width: 100%;
 }
 
-.container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 24px;
-  gap: 16px;
+h2 {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 6rem;
+  font-style: normal;
+  color: black;
 }
 
-body {
-  background-color: seashell;
-  font-family: Arial, sans-serif;
-  font-size: 1.25rem;
+h3 {
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  font-size: 3rem;
+  font-style: normal;
+}
+
+p {
+  line-height: 1.25;
+}
+
+label {
+  font-family: "Instrument Serif", serif;
+  font-weight: 100;
+  font-size: 2rem;
+  color: black;
+  margin: 0;
+}
+
+select {
+  font-family: "Instrument Serif", serif;
+  font-weight: 100;
+  font-size: 2rem;
+  color: black;
+  background-color: #ffffff02;
+  padding: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }

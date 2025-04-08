@@ -6,47 +6,105 @@
     <!-- @Vue -->
     <script
       defer
-      src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js
-      "
+      src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"
     ></script>
     <!-- @FontAwesome -->
     <script
       src="https://kit.fontawesome.com/5ea80a4b63.js"
       crossorigin="anonymous"
     ></script>
+
+    <!-- @Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
     <!-- @CSS -->
     <link rel="stylesheet" href="./css/main.css" />
     <!-- @JS -->
     <script defer src="./js/main.js"></script>
-    <title>Mantisdir</title>
+    <title>MantisDir</title>
   </head>
   <body>
-    <div id="app" class="container">
-      <section id="test">
-        <div v-if="isLoading" class="loading"></div>
-        <div
-          id="continent-species"
-          v-for="(mantis, index) in mantis"
-          :key="mantis.common_name"
-          class="mantis-card"
-        >
-          <h3 @click="getMantis(mantis.continental_id)">
-            {{ mantis.common_name}}
-          </h3>
-          <p>{{ mantis.species_name }}</p>
-          <p>{{ mantis.continent }}</p>
-        </div>
-        <div v-if="error">{{error}}</div>
-
-        <div id="sub-species" v-if="continent">
-          <div v-if="isLoading" class="loading"></div>
-          <div
-            v-for="(localMantis, index) in mantis[0].subspecies"
-            :key="localMantis.subspecies_id"
-          >
-            <p>{{ localMantis.subspecies_name }}</p>
+    <div id="app">
+      <section id="display" class="container">
+        <!-- Main mantis list -->
+        <div id="continent-species__con">
+          <div id="continent-img">
+            <img
+              :src="selectedMantis?.img || 'images/defaultMantis.png'"
+              alt="Continent Image"
+            />
           </div>
-          <div v-if="error">{{error}}</div>
+          <h2>MantisDir</h2>
+          <p>Explore the wild side of mantis life.</p>
+          <div id="label__select">
+            <label for="continent-select">Choose a continent</label>
+            <select
+              id="continent-select"
+              @change="getMantis($event.target.value)"
+            >
+              <option disabled selected value="">Select Continent</option>
+              <option
+                v-for="(mantisItem, index) in mantis"
+                :key="mantisItem.continental_id"
+                :value="mantisItem.continental_id"
+              >
+                {{ mantisItem.continent }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Subspecies section -->
+        <div
+          id="sub-species"
+          class="subspecies hidden"
+          v-if="continent"
+          :style="{ backgroundImage: `url(${selectedMantis?.biomes})` }"
+        >
+          <i class="fa-thin fa-arrow-left back" @click="backFromSubSpecie"></i>
+          <div v-if="isLoadingSub" class="loading"></div>
+
+          <div
+            v-for="(localMantis, index) in selectedMantis?.subspecies || []"
+            :key="localMantis.subspecies_id"
+            class="subspecies-card"
+          >
+            <h3
+              class="localMantis"
+              @click="getLocalSpecie(localMantis.subspecies_id)"
+            >
+              {{ localMantis.subspecies_name }}
+            </h3>
+            <p id="local-text">{{ localMantis.region}}</p>
+          </div>
+
+          <div v-if="subspeciesErrorCall" class="error">
+            {{ subspeciesErrorCall }}
+          </div>
+        </div>
+
+        <div id="aMantis" class="hidden">
+          <i class="fa-thin fa-arrow-left back" @click="backFromMantis"></i>
+          <div v-if="isLoadingSub">
+            <p>Loading species data...</p>
+          </div>
+          <div id="mantisInfo" v-else-if="selectedSubspecies">
+            <div id="mantisImg" v-if="selectedSubspecies.image_path">
+              <img
+                v-if="selectedSubspecies.image_path"
+                :src="selectedSubspecies.image_path"
+                alt=""
+              />
+            </div>
+            <h3>{{ selectedSubspecies.subspecies_name }}</h3>
+            <p>Region: {{ selectedSubspecies.region }}</p>
+            <p>Specie: {{ selectedMantis.species_name }}</p>
+            <p>Trait: {{ selectedSubspecies.specific_traits }}</p>
+          </div>
         </div>
       </section>
     </div>
